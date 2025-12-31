@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Love Game 💖</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ff5f9e, #ffc3a0);
+            font-family: 'Segoe UI', sans-serif;
+            text-align: center;
+            color: white;
+        }
+
+        h1 {
+            margin-top: 20px;
+            font-size: 2.5rem;
+        }
+
+        #score {
+            font-size: 1.5rem;
+            margin-top: 10px;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            cursor: pointer;
+            animation: fall linear;
+        }
+
+        @keyframes fall {
+            from { top: -50px; }
+            to { top: 100vh; }
+        }
+
+        .message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            color: #ff4f7b;
+            padding: 30px;
+            border-radius: 20px;
+            font-size: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            background: #ff4f7b;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #ff2f6d;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Catch My Love ❤️</h1>
+    <p id="score">Hearts Collected: 0</p>
+
+    <div class="message" id="messageBox">
+        You caught my heart 💖<br>
+        That means you're mine forever 😘  
+        <br><br>
+        <button onclick="nextPage()">Next Surprise ➝</button>
+    </div>
+
+    <script>
+        let score = 0;
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "❤️";
+            heart.style.left = Math.random() * 90 + "vw";
+            heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+
+            heart.onclick = () => {
+                score++;
+                document.getElementById("score").innerText = "Hearts Collected: " + score;
+                heart.remove();
+
+                if (score >= 10) {
+                    showMessage();
+                }
+            };
+
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        function showMessage() {
+            document.getElementById("messageBox").style.display = "block";
+        }
+
+        function nextPage() {
+            window.location.href = "page8.html";
+        }
+
+        setInterval(createHeart, 800);
+    </script>
+
+</body>
+</html>
+
+<!-- Background Music -->
+<audio id="bgMusic" loop>
+    <source src="bgmusic.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Music Controls -->
+<div id="musicControl" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255,255,255,0.2);
+    padding: 10px 15px;
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    z-index: 999;
+">
+    <button onclick="toggleMusic()" id="musicBtn">🔊</button>
+    <input type="range" min="0" max="1" step="0.01" id="volume" value="0.5">
+</div>
+
+<script>
+    const music = document.getElementById("bgMusic");
+    const btn = document.getElementById("musicBtn");
+    const volume = document.getElementById("volume");
+
+    // Auto play after first click anywhere
+    document.addEventListener("click", () => {
+        if (!localStorage.getItem("musicStarted")) {
+            music.volume = 0.5;
+            music.play();
+            localStorage.setItem("musicStarted", "true");
+        }
+    }, { once: true });
+
+    // Toggle play / pause
+    function toggleMusic() {
+        if (music.paused) {
+            music.play();
+            btn.innerHTML = "🔊";
+        } else {
+            music.pause();
+            btn.innerHTML = "🔇";
+        }
+    }
+
+    // Volume control
+    volume.addEventListener("input", () => {
+        music.volume = volume.value;
+    });
+</script>

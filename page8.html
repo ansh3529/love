@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Year Countdown 💖</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #ff6a88, #ff99ac);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin-top: 40px;
+            font-size: 2.8rem;
+            animation: fadeIn 2s ease;
+        }
+
+        #countdown {
+            font-size: 3rem;
+            margin-top: 40px;
+            letter-spacing: 3px;
+            animation: fadeIn 2s ease;
+        }
+
+        .message {
+            display: none;
+            font-size: 2.4rem;
+            margin-top: 50px;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        button {
+            display: none;
+            margin-top: 40px;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            background: white;
+            color: #ff4f7b;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            background: #ffe1ec;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #ff7aa2; }
+            to { text-shadow: 0 0 25px #ffb3c7; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Fireworks */
+        .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: pink;
+            border-radius: 50%;
+            animation: explode 1.5s linear infinite;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(5); opacity: 0; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>New Year Countdown 💖</h1>
+
+    <div id="countdown">Loading...</div>
+
+    <div class="message" id="newYearMessage">
+        🎉 Happy New Year My Love ❤️ 🎉
+    </div>
+
+    <button id="finalBtn" onclick="nextPage()">Final Surprise ➝</button>
+
+    <script>
+        const newYear = new Date("January 1, 2026 00:00:00").getTime();
+
+        const timer = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = newYear - now;
+
+            if (distance <= 0) {
+                clearInterval(timer);
+                document.getElementById("countdown").style.display = "none";
+                document.getElementById("newYearMessage").style.display = "block";
+                document.getElementById("finalBtn").style.display = "inline-block";
+                startFireworks();
+            } else {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((distance / 1000 / 60) % 60);
+                const seconds = Math.floor((distance / 1000) % 60);
+
+                document.getElementById("countdown").innerHTML =
+                    `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
+        }, 1000);
+
+        function startFireworks() {
+            setInterval(() => {
+                const fw = document.createElement("div");
+                fw.classList.add("firework");
+                fw.style.left = Math.random() * 100 + "vw";
+                fw.style.top = Math.random() * 100 + "vh";
+                fw.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
+                document.body.appendChild(fw);
+
+                setTimeout(() => fw.remove(), 1500);
+            }, 250);
+        }
+
+        function nextPage() {
+            window.location.href = "page9.html";
+        }
+    </script>
+
+</body>
+</html>
+
+<!-- Background Music -->
+<audio id="bgMusic" loop>
+    <source src="bgmusic.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Music Controls -->
+<div id="musicControl" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255,255,255,0.2);
+    padding: 10px 15px;
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    z-index: 999;
+">
+    <button onclick="toggleMusic()" id="musicBtn">🔊</button>
+    <input type="range" min="0" max="1" step="0.01" id="volume" value="0.5">
+</div>
+
+<script>
+    const music = document.getElementById("bgMusic");
+    const btn = document.getElementById("musicBtn");
+    const volume = document.getElementById("volume");
+
+    // Auto play after first click anywhere
+    document.addEventListener("click", () => {
+        if (!localStorage.getItem("musicStarted")) {
+            music.volume = 0.5;
+            music.play();
+            localStorage.setItem("musicStarted", "true");
+        }
+    }, { once: true });
+
+    // Toggle play / pause
+    function toggleMusic() {
+        if (music.paused) {
+            music.play();
+            btn.innerHTML = "🔊";
+        } else {
+            music.pause();
+            btn.innerHTML = "🔇";
+        }
+    }
+
+    // Volume control
+    volume.addEventListener("input", () => {
+        music.volume = volume.value;
+    });
+</script>

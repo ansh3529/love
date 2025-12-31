@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Our Memories 💕</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            text-align: center;
+            color: #fff;
+        }
+
+        h1 {
+            margin: 30px 0;
+            font-size: 3rem;
+            animation: fadeDown 1.5s ease;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.4s, box-shadow 0.4s;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.08);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn {
+            margin: 40px 0;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            background: white;
+            color: #ff5f7e;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #ffe3ec;
+            transform: scale(1.1);
+        }
+
+        /* Popup Image */
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 15px;
+        }
+
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Our Beautiful Memories 📸</h1>
+
+    <div class="gallery">
+        <img src="pic1.jpg" onclick="openImg(this.src)">
+        <img src="pic2.jpg" onclick="openImg(this.src)">
+        <img src="pic3.jpg" onclick="openImg(this.src)">
+        <img src="pic4.jpg" onclick="openImg(this.src)">
+        <img src="pic5.jpg" onclick="openImg(this.src)">
+        <img src="pic6.jpg" onclick="openImg(this.src)">
+    </div>
+
+    <button class="btn" onclick="nextPage()">Next Page ➝</button>
+
+    <div class="popup" id="popup" onclick="closeImg()">
+        <img id="popupImg">
+    </div>
+
+    <script>
+        function openImg(src) {
+            document.getElementById("popup").style.display = "flex";
+            document.getElementById("popupImg").src = src;
+        }
+
+        function closeImg() {
+            document.getElementById("popup").style.display = "none";
+        }
+
+        function nextPage() {
+            window.location.href = "page4.html";
+        }
+    </script>
+
+</body>
+</html>
+
+<!-- Background Music -->
+<audio id="bgMusic" loop>
+    <source src="bgmusic.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Music Controls -->
+<div id="musicControl" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255,255,255,0.2);
+    padding: 10px 15px;
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    z-index: 999;
+">
+    <button onclick="toggleMusic()" id="musicBtn">🔊</button>
+    <input type="range" min="0" max="1" step="0.01" id="volume" value="0.5">
+</div>
+
+<script>
+    const music = document.getElementById("bgMusic");
+    const btn = document.getElementById("musicBtn");
+    const volume = document.getElementById("volume");
+
+    // Auto play after first click anywhere
+    document.addEventListener("click", () => {
+        if (!localStorage.getItem("musicStarted")) {
+            music.volume = 0.5;
+            music.play();
+            localStorage.setItem("musicStarted", "true");
+        }
+    }, { once: true });
+
+    // Toggle play / pause
+    function toggleMusic() {
+        if (music.paused) {
+            music.play();
+            btn.innerHTML = "🔊";
+        } else {
+            music.pause();
+            btn.innerHTML = "🔇";
+        }
+    }
+
+    // Volume control
+    volume.addEventListener("input", () => {
+        music.volume = volume.value;
+    });
+</script>

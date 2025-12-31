@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Private Access 💖</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin:0;
+            height:100vh;
+            font-family:'Segoe UI',sans-serif;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+            background: linear-gradient(135deg,#ff6a88,#ff99ac);
+            color:white;
+        }
+
+        /* LOCK SCREEN */
+        #lockScreen {
+            position:absolute;
+            top:0; left:0; width:100%; height:100%;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            z-index:999;
+            cursor:pointer;
+        }
+        #lockScreen .lock {
+            font-size:80px;
+            animation: pulse 1.5s infinite;
+        }
+        #lockScreen .tap-text {
+            margin-top:20px;
+            font-size:1.2rem;
+        }
+        @keyframes pulse{
+            0%{transform:scale(1);}
+            50%{transform:scale(1.2);}
+            100%{transform:scale(1);}
+        }
+
+        /* NAME BOX */
+        #loginBox {
+            display:none;
+            background: rgba(255,255,255,0.15);
+            padding:40px;
+            border-radius:20px;
+            backdrop-filter:blur(10px);
+            width:90%;
+            max-width:400px;
+            z-index:10;
+        }
+        input {
+            width:100%;
+            padding:12px;
+            border-radius:25px;
+            border:none;
+            outline:none;
+            font-size:16px;
+            text-align:center;
+            margin-bottom:20px;
+        }
+        button {
+            padding:12px 30px;
+            border:none;
+            border-radius:25px;
+            background:white;
+            color:#ff4f7b;
+            font-size:16px;
+            cursor:pointer;
+        }
+        button:hover{ background:#ffe1ec; }
+        .error { margin-top:10px; color:#fff; display:none; }
+    </style>
+</head>
+<body>
+
+    <!-- LOCK SCREEN -->
+    <div id="lockScreen">
+        <div class="lock">🔒</div>
+        <div class="tap-text">Tap to Unlock ❤️</div>
+    </div>
+
+    <!-- NAME INPUT -->
+    <div id="loginBox">
+        <h1>Enter Your Name 💖</h1>
+        <input type="text" id="nameInput" placeholder="Type your name...">
+        <button id="submitBtn">Enter</button>
+        <p class="error" id="errorMsg">Wrong name 💔</p>
+    </div>
+
+    <script>
+        const lockScreen = document.getElementById("lockScreen");
+        const loginBox = document.getElementById("loginBox");
+        const submitBtn = document.getElementById("submitBtn");
+        const errorMsg = document.getElementById("errorMsg");
+
+        lockScreen.addEventListener("click", function(){
+            lockScreen.style.display = "none";
+            loginBox.style.display = "block";
+        });
+
+        submitBtn.addEventListener("click", function(){
+            const name = document.getElementById("nameInput").value.trim().toLowerCase();
+            const correctName = "muskan"; // <-- CHANGE NAME HERE
+
+            if(name === correctName){
+                window.location.href = "page1.html";
+            } else {
+                errorMsg.style.display = "block";
+            }
+        });
+
+        document.getElementById("nameInput").addEventListener("keypress", function(e){
+            if(e.key === "Enter"){
+                submitBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>
